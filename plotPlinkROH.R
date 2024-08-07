@@ -10,9 +10,9 @@
 
 #### parse argument ####
 # create parser object
+suppressPackageStartupMessages(library("argparse"))
 
 parser <- ArgumentParser()
-suppressPackageStartupMessages(library("argparse"))
 
 # specify our desired options 
 # by default ArgumentParser will add an help option 
