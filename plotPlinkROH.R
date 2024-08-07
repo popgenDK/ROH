@@ -8,6 +8,40 @@
 ################################
 # Author: Xiaodong Liu (UCPH), Shixu He (UCPH)
 
+#### parse argument ####
+# create parser object
+parser <- ArgumentParser()
+
+# specify our desired options 
+# by default ArgumentParser will add an help option 
+parser$add_argument("-v", "--verbose", action="store_true", default=TRUE,
+                    help="Print extra output [default]")
+parser$add_argument("-p", "--plinkfile", type="character",
+                    help="plink bed file",metavar="string")
+parser$add_argument("-s", "--sample", type="character", 
+                    help="sample to plot",
+                    metavar="string")
+parser$add_argument("-FID","--use_familyID",type="logical",default=FALSE,
+                    help ="use FID instead of IID",
+                    metavar="interger")
+parser$add_argument("-w","--windowsize",type="integer",default=100000,
+                    help ="sliding window size for density calculation [100000 by default]",
+                    metavar="interger")
+parser$add_argument("--homfile", type="character",
+                    metavar="string",
+                    help = "hom output by plink")
+
+
+# get command line options, if help option encountered print help and exit,
+# otherwise if options not found on command line then set defaults, 
+args <- parser$parse_args()
+
+# print some progress messages to stderr if "quietly" wasn't requested
+if ( args$verbose ) { 
+  write("writing some verbose information while processing..\n", stderr()) 
+}
+
+
 #### Load libraries ####
 source("https://raw.githubusercontent.com/aalbrechtsen/Rfun/master/online.R")
 library(snpStats)
@@ -63,35 +97,6 @@ hom_count <- function(x) {
 }
 #### end of functions
 
-#### parse argument ####
-# create parser object
-parser <- ArgumentParser()
-
-# specify our desired options 
-# by default ArgumentParser will add an help option 
-parser$add_argument("-v", "--verbose", action="store_true", default=TRUE,
-                    help="Print extra output [default]")
-parser$add_argument("-p", "--plinkfile", type="character",
-                    help="plink bed file",metavar="string")
-parser$add_argument("-s", "--sample", type="character", 
-                    help="sample to plot",
-                    metavar="string")
-parser$add_argument("-w","--windowsize",type="integer",default=100000,
-                    help ="sliding window size for density calculation [100000 by default]",
-                    metavar="interger")
-parser$add_argument("--homfile", type="character",
-                    metavar="string",
-                    help = "hom output by plink")
-
-
-# get command line options, if help option encountered print help and exit,
-# otherwise if options not found on command line then set defaults, 
-args <- parser$parse_args()
-
-# print some progress messages to stderr if "quietly" wasn't requested
-if ( args$verbose ) { 
-  write("writing some verbose information while processing..\n", stderr()) 
-}
 
 filename = args$plinkfile
 individual = args$sample
@@ -224,7 +229,11 @@ for (i in 1:length(unique(output$chr))) {
 
 ### deal with inferred ROH by plink
 hom.table <- read.table(homfile, header=T)
-hom.table.ind <- hom.table[hom.table$FID==individual & hom.table$KB>=1000,]
+if(use_fid)
+  hom.table.ind <- hom.table[hom.table$FID==individual & hom.table$KB>=1000,]
+else
+  hom.table.ind <- hom.table[hom.table$IID==individual & hom.table$KB>=1000,]
+
 hom.table.ind$CHR=as.character(hom.table.ind$CHR)
 
 xref= unique(y) # reference for change chr name to chr number
