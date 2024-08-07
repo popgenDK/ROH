@@ -103,6 +103,8 @@ filename = args$plinkfile
 individual = args$sample
 homfile = args$homfile
 windowsize = args$windowsize
+use_fid = args$use_familyID
+
 #### end of argunemt parser
 
 #### read plink file ####
