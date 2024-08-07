@@ -232,11 +232,11 @@ for (i in 1:length(unique(output$chr))) {
 
 ### deal with inferred ROH by plink
 hom.table <- read.table(homfile, header=T)
-if(use_fid)
+{ if(use_fid)
   hom.table.ind <- hom.table[hom.table$FID==individual & hom.table$KB>=1000,]
 else
   hom.table.ind <- hom.table[hom.table$IID==individual & hom.table$KB>=1000,]
-
+}
 hom.table.ind$CHR=as.character(hom.table.ind$CHR)
 
 xref= unique(y) # reference for change chr name to chr number
