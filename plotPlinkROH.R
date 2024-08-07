@@ -9,7 +9,7 @@
 # Author: Xiaodong Liu (UCPH), Shixu He (UCPH)
 
 #### Load libraries ####
-source("https://github.com/aalbrechtsen/Rfun/blob/master/online.R")
+source("https://raw.githubusercontent.com/aalbrechtsen/Rfun/master/online.R")
 library(snpStats)
 library(windowscanr)
 library(tidyverse)
