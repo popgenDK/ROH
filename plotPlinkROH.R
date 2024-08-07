@@ -10,7 +10,9 @@
 
 #### parse argument ####
 # create parser object
+
 parser <- ArgumentParser()
+suppressPackageStartupMessages(library("argparse"))
 
 # specify our desired options 
 # by default ArgumentParser will add an help option 
@@ -48,7 +50,6 @@ library(snpStats)
 library(windowscanr)
 library(tidyverse)
 library("RColorBrewer")
-suppressPackageStartupMessages(library("argparse"))
 #### end of loading
 
 #### functions ####
